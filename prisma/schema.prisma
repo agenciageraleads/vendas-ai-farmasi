@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  LEADER
+  CONSULTANT
+  CUSTOMER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String   // In a real app, hash this!
+  role      Role     @default(CONSULTANT)
+  
+  // For Consultants/Leaders
+  leaderId  String?
+  leader    User?    @relation("Team", fields: [leaderId], references: [id])
+  team      User[]   @relation("Team")
+  
+  inventory      InventoryItem[]
+  sales          Order[]         @relation("Seller")
+  purchases      Order[]         @relation("Buyer")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  sku         String   @unique // Catalog code
+  imageUrl    String?
+  basePrice   Decimal  // Suggested price
+  costPrice   Decimal  // Consultant cost (approx)
+  
+  inventoryItems InventoryItem[]
+  orderItems     OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InventoryItem {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  quantity  Int      @default(0)
+  location  String?  // 'Casa', 'Carro', 'Emprestado'
+  isSample  Boolean  @default(false)
+  openedAt  DateTime? // Track when a sample was opened for usage
+  
+  batchNumber String?
+  expirationDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  sellerId  String
+  seller    User        @relation("Seller", fields: [sellerId], references: [id])
+  buyerId   String?     // Can be a registered user or guest (store basic info if null?) 
+  buyer     User?       @relation("Buyer", fields: [buyerId], references: [id])
+  
+  status    OrderStatus @default(PENDING)
+  total     Decimal
+  
+  items     OrderItem[]
+  
+  customerName    String? // For quick sales without full account
+  customerPhone   String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  quantity  Int
+  unitPrice Decimal // Price sold at (can be custom)
+  
+  createdAt DateTime @default(now())
+}
