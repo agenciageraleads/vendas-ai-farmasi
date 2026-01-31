@@ -25,6 +25,16 @@ enum OrderStatus {
   CANCELED
 }
 
+enum TransactionType {
+  PURCHASE     // Entrada por Compra (Nota Fiscal)
+  SALE         // Saída por Venda
+  ADJUST       // Ajuste Manual (Perda/Sobras)
+  LOAN_OUT     // Saída por Empréstimo (Para outro Consultor)
+  LOAN_IN      // Entrada por Empréstimo (De outro Consultor)
+  RETURN_OUT   // Devolução de Empréstimo (Saída)
+  RETURN_IN    // Recebimento de Devolução (Entrada)
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -32,30 +42,87 @@ model User {
   password  String   // In a real app, hash this!
   role      Role     @default(CONSULTANT)
   
+  // UX & Configs
+  preferences      Json?    // Ex: { "mode": "simple" | "advanced", "theme": "dark" }
+  interestSettings Json?    // Ex: { "fine": 2.0, "monthlyInterest": 1.0 }
+  
   // For Consultants/Leaders
   leaderId  String?
   leader    User?    @relation("Team", fields: [leaderId], references: [id])
   team      User[]   @relation("Team")
   
+  // For Partners (Estoque Compartilhado)
+  partnersSent     PartnerConnection[] @relation("Requester")
+  partnersReceived PartnerConnection[] @relation("Accepter")
+
+  // For Customers
+  cpf             String?   @unique
+  phone           String?
+  address         Json?     // { street, num, zip, city, state }
+  referenceName   String?   // Pessoa de referência
+  referencePhone  String?
+  legalAcceptances LegalTermAcceptance[]
+
   inventory      InventoryItem[]
+  transactions   InventoryTransaction[] // Histórico de todas as mov do usuário
+  
   sales          Order[]         @relation("Seller")
   purchases      Order[]         @relation("Buyer")
+
+  // For Collaboration
+  requestsSent     StockRequest[]    @relation("Requester")
+  requestsReceived StockRequest[]    @relation("Owner")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Product {
+model StockRequest {
   id          String   @id @default(uuid())
-  name        String
-  description String?
-  sku         String   @unique // Catalog code
-  imageUrl    String?
-  basePrice   Decimal  // Suggested price
-  costPrice   Decimal  // Consultant cost (approx)
+  requesterId String
+  requester   User     @relation("Requester", fields: [requesterId], references: [id])
+  ownerId     String
+  owner       User     @relation("Owner", fields: [ownerId], references: [id])
+  
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  
+  quantity    Int
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED, RETURNED
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PartnerConnection {
+  id          String   @id @default(uuid())
+  requesterId String
+  requester   User     @relation("Requester", fields: [requesterId], references: [id])
+  accepterId  String
+  accepter    User     @relation("Accepter", fields: [accepterId], references: [id])
+  
+  status      String   @default("PENDING") // PENDING, ACTIVE, BLOCKED
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([requesterId, accepterId])
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  name           String
+  description    String?
+  sku            String   @unique // Catalog code
+  imageUrl       String?
+  
+  basePrice      Decimal  // Generated/Web Price (Venda Sugerido)
+  costPrice      Decimal  // Current effective cost (approx)
+  referencePrice Decimal? // Tabela da Empresa (Para Permutas)
   
   inventoryItems InventoryItem[]
   orderItems     OrderItem[]
+  transactions   InventoryTransaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,30 +136,70 @@ model InventoryItem {
   product   Product  @relation(fields: [productId], references: [id])
   
   quantity  Int      @default(0)
-  location  String?  // 'Casa', 'Carro', 'Emprestado'
-  isSample  Boolean  @default(false)
-  openedAt  DateTime? // Track when a sample was opened for usage
   
-  batchNumber String?
+  // Valor Total em Estoque (Para Preço Médio)
+  // Preço Médio = costAmount / quantity
+  costAmount Decimal @default(0) 
+
+  location  String?  // 'Casa', 'Carro', 'Emprestado:Nome'
+  isSample  Boolean  @default(false)
+  openedAt  DateTime? 
+  
+  batchNumber    String?
   expirationDate DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model InventoryTransaction {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  productId String
+  product   Product         @relation(fields: [productId], references: [id])
+  
+  type      TransactionType
+  quantity  Int             // Pode ser negativo para saídas? Geralmente positivo e o type define
+  
+  unitCost  Decimal         // Custo no momento da transação (para histórico)
+  totalCost Decimal         // quantity * unitCost
+  
+  partnerId String?         // Se foi empréstimo/troca, com quem? 
+  note      String?         // "NFe 123" ou "Empréstimo para Fulano"
+
+  createdAt DateTime @default(now())
+}
+
+model LegalTermAcceptance {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  termVersion String // "v1.0"
+  ipAddress   String
+  userAgent   String?
+  acceptedAt  DateTime @default(now())
+}
+
 model Order {
   id        String      @id @default(uuid())
   sellerId  String
   seller    User        @relation("Seller", fields: [sellerId], references: [id])
-  buyerId   String?     // Can be a registered user or guest (store basic info if null?) 
+  buyerId   String?     
   buyer     User?       @relation("Buyer", fields: [buyerId], references: [id])
   
   status    OrderStatus @default(PENDING)
   total     Decimal
   
+  // Financeiro
+  asaasPaymentId String?
+  paymentLink    String?
+  interestAdded  Decimal? @default(0)
+  
   items     OrderItem[]
   
-  customerName    String? // For quick sales without full account
+  customerName    String? 
   customerPhone   String?
   
   createdAt DateTime @default(now())
@@ -107,7 +214,7 @@ model OrderItem {
   product   Product  @relation(fields: [productId], references: [id])
   
   quantity  Int
-  unitPrice Decimal // Price sold at (can be custom)
+  unitPrice Decimal 
   
   createdAt DateTime @default(now())
 }

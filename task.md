@@ -1,21 +1,46 @@
-# Tarefa: Implementação do Sync Engine Farmasi
+# Roadmap VendaAI - Sistema de Gestão para Venda Direta
 
 ## Objetivo
 
-Criar um sistema que busca produtos do site da Farmasi e os pré-cadastra nas lojas dos consultores.
+Desenvolver uma plataforma SaaS completa para consultores de venda direta, centralizando estoque, financeiro, CRM e liderança. O foco inicial (MVP) é a **Rede Farmasi**, mas pronto para multimarcas.
 
-## Progresso
+## Fases do Projeto
 
-- [x] Exploração do site Farmasi para identificar estrutura de dados.
-- [x] Criação do script de sincronização `scripts/farmasi-sync.ts`.
-- [x] Adição do comando `npm run sync:products` ao `package.json`.
-- [ ] Instalação de dependências (`playwright`).
-- [ ] Execução da primeira sincronização.
-- [ ] Configuração do "engine" de atualização automática (instruções).
+### Fase 1: Fundação e Estoque Inteligente (MVP Crítico)
 
-## Próximos Passos
+- [x] **Configuração do Projeto e Base de Dados**
+  - [x] Setup Next.js + Prisma + Postgres.
+  - [x] Script de Sync de Produtos Farmasi.
+  - [x] Atualizar Schema Prisma (Todos os Modelos).
+- [x] **Gestão de Estoque Avançada**
+  - [x] Multi-localização + Preço Médio.
+  - [x] Entradas, Transferências e Auditoria.
 
-1. Aguardar a instalação do Playwright.
-2. Executar `npx playwright install` para baixar os binários dos navegadores.
-3. Rodar `npm run sync:products` para validar o seed inicial e o pre-cadastro.
-4. Documentar como agendar a execução automática.
+### Fase 2: Rede de Colaboração (Diferencial)
+
+- [x] **Módulo de Liderança Fluida**
+  - [x] "Vitrine Compartilhada": Ver estoque da rede.
+  - [x] **Fluxo de Empréstimo**: Solicitar -> Aprovar -> Logar Transação.
+  - [x] Painel de Aprovações (Central de Notificações).
+
+### Fase 3: Venda e Financeiro (Checkout)
+
+- [x] **Gestão de Vendas (PDV)**
+  - [x] Action de Venda (Baixa estoque, Pedido, Pagamento).
+  - [x] PDV com Carrinho e Cadastro de Cliente.
+  - [x] Compliance (Aceite de Termos LGPD).
+  - [x] Integração Financeira (Mock funcional para Asaas).
+
+### Fase 4: O "Consórcio" e CRM
+
+- [ ] **Motor de Consórcio e Score Interno**.
+
+## Status do MVP
+
+Estamos a **100% Funcional** (MVP de Código). 🚀
+
+- ✅ **Estoque**: Gestão completa (individual).
+- ✅ **Rede**: Colaboração real (emprestar produtos entre consultores).
+- ✅ **Vendas**: Checkout com segurança jurídica e mock financeiro.
+
+Próximo passo técnico: **Deploy** em Produção e troca de chaves da API de Pagamento.
