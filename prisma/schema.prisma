@@ -123,6 +123,7 @@ model Product {
   inventoryItems InventoryItem[]
   orderItems     OrderItem[]
   transactions   InventoryTransaction[]
+  requests       StockRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
