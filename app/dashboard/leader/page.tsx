@@ -18,9 +18,9 @@ export default async function LeaderDashboard() {
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <Link href="/dashboard/consultant" className="text-xs font-black text-gray-400 hover:text-indigo-600 uppercase tracking-widest">Minha Visão Pessoal</Link>
+                        <Link href="/dashboard/inventory" className="text-xs font-black text-gray-400 hover:text-indigo-600 uppercase tracking-widest">Minha Visão Pessoal</Link>
                         <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-xs shadow-lg shadow-indigo-200">
-                            {data.leaderName.substring(0, 1)}
+                            {(data.leaderName || 'L').substring(0, 1)}
                         </div>
                     </div>
                 </div>
