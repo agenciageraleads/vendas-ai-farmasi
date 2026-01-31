@@ -49,7 +49,7 @@ export default async function InventoryDashboardPage() {
                 </div>
 
                 {/* Main Table */}
-                <InventoryTable inventory={inventory} />
+                <InventoryTable inventory={inventory || []} />
             </div>
         </div>
     );
