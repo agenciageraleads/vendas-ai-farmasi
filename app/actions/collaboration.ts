@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { moveStock } from '@/app/actions/inventory';
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '@/lib/prisma';
 
 /**
  * Cria uma solicitação de empréstimo/produto para outro consultor.

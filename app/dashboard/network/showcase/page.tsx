@@ -14,7 +14,9 @@ export default async function NetworkPage() {
     const result = await getPartnerShowcase(user.id);
     const incomingRequests = await getIncomingRequests(user.id);
 
-    if (!result || !incomingRequests || (result as any).error) return <div>Erro ao carregar rede.</div>;
+    if (!result || 'error' in result || !incomingRequests) {
+        return <div>Erro ao carregar rede.</div>;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50/50 p-6 md:p-12">
@@ -33,7 +35,7 @@ export default async function NetworkPage() {
                             <span className="text-[10px] uppercase font-bold tracking-widest opacity-80">Parceiros Conectados</span>
                         </div>
                         <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                            <span className="block text-2xl font-bold">{(result.items || []).length}</span>
+                            <span className="block text-2xl font-bold">{((result as any).items || []).length}</span>
                             <span className="text-[10px] uppercase font-bold tracking-widest opacity-80">Produtos Únicos Disponíveis</span>
                         </div>
                     </div>

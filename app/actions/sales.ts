@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { removeStock } from '@/app/actions/inventory';
 import { createPaymentLink } from '@/app/actions/asaas';
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '@/lib/prisma';
 
 interface SaleItem {
     sku: string;

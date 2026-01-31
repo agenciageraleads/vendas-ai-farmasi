@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '@/lib/prisma';
 
 // ==========================================
 // READ Actions
@@ -37,12 +37,12 @@ export async function getConsultantInventory(userId: string) {
                 locations: []
             });
         }
-        
+
         const entry = uniqueProducts.get(item.productId);
         entry.totalQuantity += item.quantity;
         // Valor de custo total estocado (Preço Médio * Qtd)
-        entry.totalValue += Number(item.costAmount); 
-        
+        entry.totalValue += Number(item.costAmount);
+
         entry.locations.push({
             id: item.id,
             location: item.location || 'Padrão',
@@ -65,7 +65,7 @@ export async function getInventorySummary(userId: string) {
             costAmount: true
         }
     });
-    
+
     // Low stock count (items with < 3 units across all locations)
     // This is complex with aggregation, simplistic approach for now:
     const lowStockItems = await prisma.inventoryItem.groupBy({
@@ -91,10 +91,10 @@ export async function getInventorySummary(userId: string) {
  * Calcula Preço Médio Ponderado.
  */
 export async function addStock(
-    userId: string, 
-    sku: string, 
-    quantity: number, 
-    unitCost: number, 
+    userId: string,
+    sku: string,
+    quantity: number,
+    unitCost: number,
     location: string = 'Casa',
     note: string = 'Entrada Manual'
 ) {
@@ -124,7 +124,7 @@ export async function addStock(
             // Update with Weighted Average Cost logic
             // New Total Value = (Old Total) + (New Qty * New Cost)
             const newCostAmount = Number(item.costAmount) + (quantity * unitCost);
-            
+
             await tx.inventoryItem.update({
                 where: { id: item.id },
                 data: {
@@ -144,7 +144,7 @@ export async function addStock(
                 }
             });
         }
-        
+
         return { success: true };
     });
 }
@@ -154,9 +154,9 @@ export async function addStock(
  * Não altera o custo unitário médio, apenas reduz o valor total proporcionalmente.
  */
 export async function removeStock(
-    userId: string, 
-    sku: string, 
-    quantity: number, 
+    userId: string,
+    sku: string,
+    quantity: number,
     location: string = 'Casa',
     type: TransactionType = TransactionType.SALE,
     note: string = ''
@@ -186,7 +186,7 @@ export async function removeStock(
                 productId: product.id,
                 type,
                 quantity: -quantity, // Negative for removal logic visualization? Or keep absolute and rely on type?
-                                     // Let's keep absolute in structure but logic implies removal
+                // Let's keep absolute in structure but logic implies removal
                 unitCost: currentAvgCost,
                 totalCost: valueRemoved,
                 note
@@ -210,10 +210,10 @@ export async function removeStock(
  * Movimentação entre locais (Casa -> Carro)
  */
 export async function moveStock(
-    userId: string, 
-    sku: string, 
-    quantity: number, 
-    fromLocation: string, 
+    userId: string,
+    sku: string,
+    quantity: number,
+    fromLocation: string,
     toLocation: string
 ) {
     return await prisma.$transaction(async (tx) => {
