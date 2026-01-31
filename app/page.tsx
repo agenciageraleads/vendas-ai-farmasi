@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Role } from '@prisma/client';
+import { Role } from '@/lib/prisma';
 
 export default async function Home() {
   const consultant = await prisma.user.findFirst({

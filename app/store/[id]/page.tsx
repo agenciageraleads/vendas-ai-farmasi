@@ -22,7 +22,7 @@ export default async function ConsultantStorePage({ params }: { params: Promise<
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     <div className="flex flex-col">
                         <h1 className="text-2xl font-black text-pink-600 tracking-tighter italic">FARMASI</h1>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Consultor(a) {storeData.consultantName}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Consultor(a) {storeData.consultantName || 'Autônomo'}</p>
                     </div>
 
                     <div className="flex items-center gap-6">
@@ -41,7 +41,7 @@ export default async function ConsultantStorePage({ params }: { params: Promise<
                 <div className="relative z-10">
                     <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter leading-none italic uppercase">Beleza que <br /> Transforma ✨</h2>
                     <p className="text-gray-400 max-w-xl mx-auto font-medium">
-                        Os melhores produtos da Farmasi selecionados por <span className="text-white underline decoration-pink-500 underline-offset-4">{storeData.consultantName}</span>.
+                        Os melhores produtos da Farmasi selecionados por <span className="text-white underline decoration-pink-500 underline-offset-4">{storeData.consultantName || 'Venda AI'}</span>.
                     </p>
                 </div>
             </section>
@@ -55,13 +55,13 @@ export default async function ConsultantStorePage({ params }: { params: Promise<
                 <StoreClient
                     products={storeData.products}
                     consultantId={id}
-                    consultantName={storeData.consultantName}
+                    consultantName={storeData.consultantName || 'Consultor'}
                 />
 
                 {storeData.products.length === 0 && (
                     <div className="col-span-full py-20 text-center">
                         <p className="text-gray-400 font-medium">Ops! Nossos produtos acabaram de voar das prateleiras.</p>
-                        <p className="text-sm text-gray-500 mt-2">Fale com {storeData.consultantName} para encomendar.</p>
+                        <p className="text-sm text-gray-500 mt-2">Fale com {storeData.consultantName || 'seu consultor'} para encomendar.</p>
                     </div>
                 )}
             </main>
@@ -69,7 +69,7 @@ export default async function ConsultantStorePage({ params }: { params: Promise<
             <footer className="bg-white border-t border-gray-100 py-16 px-4">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div>
-                        <h5 className="text-pink-600 font-black text-lg mb-4 italic tracking-tighter">FARMASI / {storeData.consultantName}</h5>
+                        <h5 className="text-pink-600 font-black text-lg mb-4 italic tracking-tighter">FARMASI / {storeData.consultantName || 'OFFICIAL'}</h5>
                         <p className="text-xs text-gray-400 font-bold leading-relaxed uppercase tracking-widest">Sua consultora independente Farmasi. <br /> Levando beleza para todo o Brasil.</p>
                     </div>
                     <div className="flex flex-col gap-2">
