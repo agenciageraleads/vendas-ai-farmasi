@@ -21,7 +21,7 @@ export async function getStoreData(consultantId: string) {
     if (!user) return null;
 
     return {
-        consultantName: user.name,
+        consultantName: user.name || 'Consultor Farmasi',
         products: user.inventory.map(item => ({
             id: item.product.id,
             name: item.product.name,

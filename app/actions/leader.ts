@@ -32,7 +32,8 @@ export async function getLeaderData(leaderEmail: string = 'lider@farmasi.com') {
 
         return {
             id: member.id,
-            name: member.name,
+            name: member.name || 'Consultor',
+            consultantName: member.name || 'Consultor Farmasi', // Added consultantName with fallback
             email: member.email,
             inventoryValue: totalInventoryValue,
             itemsCount: member.inventory.reduce((acc, item) => acc + item.quantity, 0),
@@ -64,7 +65,7 @@ export async function getLeaderData(leaderEmail: string = 'lider@farmasi.com') {
         .slice(0, 3);
 
     return {
-        leaderName: leader.name,
+        leaderName: leader.name || 'Líder Farmasi',
         teamSize: leader.team.length,
         teamTotalValue,
         teamTotalSales,

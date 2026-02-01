@@ -74,7 +74,7 @@ export async function getPartnerShowcase(userId: string) {
         const productEntry = showcaseMap.get(item.productId);
         productEntry.holders.push({
             userId: item.user.id,
-            userName: item.user.name,
+            userName: item.user.name || 'Consultor',
             quantity: item.quantity,
             location: item.location
         });

@@ -30,6 +30,7 @@ export async function getTeamMemberDetails(memberId: string) {
 
     return {
         ...member,
+        name: member.name || 'Consultor',
         inventory: member.inventory.map(i => ({
             ...i,
             product: {
