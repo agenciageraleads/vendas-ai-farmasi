@@ -53,7 +53,7 @@ export async function getConsultantInventory(userId: string) {
 
     return {
         inventory: Array.from(uniqueProducts.values()),
-        consultantName: user.name
+        consultantName: user.name || 'Consultor'
     };
 }
 

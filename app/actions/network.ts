@@ -76,7 +76,7 @@ export async function getPartnerShowcase(userId: string) {
             userId: item.user.id,
             userName: item.user.name || 'Consultor',
             quantity: item.quantity,
-            location: item.location
+            location: item.location || 'Casa'
         });
     });
 

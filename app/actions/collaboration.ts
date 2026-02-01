@@ -36,7 +36,7 @@ export async function createBorrowRequest(
  * Busca solicitações RECEBIDAS (que o usuário deve aprovar/rejeitar).
  */
 export async function getIncomingRequests(userId: string) {
-    return await prisma.stockRequest.findMany({
+    const res = await prisma.stockRequest.findMany({
         where: {
             ownerId: userId,
             status: 'PENDING'
@@ -47,13 +47,21 @@ export async function getIncomingRequests(userId: string) {
         },
         orderBy: { createdAt: 'desc' }
     });
+
+    return res.map(r => ({
+        ...r,
+        requester: {
+            ...r.requester,
+            name: r.requester.name || 'Consultor'
+        }
+    }));
 }
 
 /**
  * Busca solicitações ENVIADAS (minhas).
  */
 export async function getOutgoingRequests(userId: string) {
-    return await prisma.stockRequest.findMany({
+    const res = await prisma.stockRequest.findMany({
         where: { requesterId: userId },
         include: {
             owner: { select: { name: true } },
@@ -61,6 +69,14 @@ export async function getOutgoingRequests(userId: string) {
         },
         orderBy: { createdAt: 'desc' }
     });
+
+    return res.map(r => ({
+        ...r,
+        owner: {
+            ...r.owner,
+            name: r.owner.name || 'Líder/Colega'
+        }
+    }));
 }
 
 /**
