@@ -11,8 +11,14 @@ export default async function InventoryDashboardPage() {
     if (!user) return <div className="p-10 text-center">Usuário não encontrado. Rode o seed.</div>;
 
     // Fetch grouped data
-    const { inventory, consultantName } = await getConsultantInventory(user.id);
+    const inventoryData = await getConsultantInventory(user.id);
     const summary = await getInventorySummary(user.id);
+
+    if ('error' in inventoryData) {
+        return <div className="p-10 text-center">Erro: {inventoryData.error}</div>;
+    }
+
+    const { inventory, consultantName } = inventoryData;
 
     return (
         <div className="min-h-screen bg-gray-50 p-6 md:p-12">

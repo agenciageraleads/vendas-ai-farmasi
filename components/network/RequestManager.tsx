@@ -24,11 +24,11 @@ export default function RequestManager({ requests, userId }: { requests: any[], 
 
         setLoadingMap(prev => ({ ...prev, [id]: false }));
 
-        if (res.success) {
+        if (res && 'success' in res && res.success) {
             setPending(prev => prev.filter(r => r.id !== id));
             // Show toast success
         } else {
-            alert(res.error);
+            alert((res as any)?.error || 'Erro ao processar solicitação.');
         }
     };
 

@@ -14,7 +14,7 @@ export default function LoginPage() {
         if (email === 'lider@farmasi.com') {
             router.push('/dashboard/leader');
         } else if (email === 'consultora@farmasi.com') {
-            router.push('/dashboard/consultant');
+            router.push('/dashboard/inventory');
         } else {
             alert('Credenciais inválidas! Tente as de teste.');
         }
