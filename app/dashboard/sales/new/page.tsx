@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import POSForm from '@/components/sales/POSForm';
 
+export const dynamic = 'force-dynamic';
+
 export default async function NewSalePage() {
     const user = await prisma.user.findFirst({
         where: { email: 'lucas@vendaai.com' }

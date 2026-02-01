@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import StockTransferForm from '@/components/inventory/StockTransferForm';
 
+export const dynamic = 'force-dynamic';
+
 export default async function InventoryTransferPage() {
     const user = await prisma.user.findFirst({
         where: { email: 'lucas@vendaai.com' }

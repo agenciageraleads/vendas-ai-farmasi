@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import StockEntryForm from '@/components/inventory/StockEntryForm';
 
+export const dynamic = 'force-dynamic';
+
 export default async function InventoryEntryPage() {
     // Mock user for MVP - in production use session/auth
     const user = await prisma.user.findFirst({

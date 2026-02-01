@@ -2,6 +2,8 @@ import { getLeaderData } from '@/app/actions/leader';
 import Link from 'next/link';
 import LeaderClient from '@/components/LeaderClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function LeaderDashboard() {
     const data = await getLeaderData();
 

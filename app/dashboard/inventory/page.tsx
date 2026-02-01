@@ -1,6 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { getConsultantInventory, getInventorySummary } from '@/app/actions/inventory';
 import InventoryTable from '@/components/inventory/InventoryTable';
+import StockMetrics from '@/components/inventory/StockMetrics';
+
+export const dynamic = 'force-dynamic';
 
 export default async function InventoryDashboardPage() {
     // Mock user for MVP
