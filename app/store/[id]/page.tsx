@@ -2,6 +2,8 @@ import { getStoreData } from '@/app/actions/store';
 import Link from 'next/link';
 import StoreClient from '@/components/StoreClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ConsultantStorePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const storeData = await getStoreData(id);

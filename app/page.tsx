@@ -1,7 +1,8 @@
-// Triggering final build for VendaAI MVP
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { Role } from '@/lib/prisma';
+
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const consultant = await prisma.user.findFirst({
