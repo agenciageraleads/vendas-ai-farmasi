@@ -4,6 +4,8 @@ import RequestManager from '@/components/network/RequestManager';
 import { getPartnerShowcase } from '@/app/actions/network';
 import { getIncomingRequests } from '@/app/actions/collaboration';
 
+export const dynamic = 'force-dynamic';
+
 export default async function NetworkPage() {
     const user = await prisma.user.findFirst({
         where: { email: 'lucas@vendaai.com' }

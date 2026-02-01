@@ -1,133 +1,110 @@
-# GUIA CENTRAL DO PRODUTO: VendaAI SaaS
+# PRODUTO VendaAI: v1 Launch (MVP) & Roadmap
 
-## 1. Visão Geral do Produto
+## 1. Visão Estratégica
 
-O **VendaAI** é um ecossistema SaaS completo para a Venda Direta, focado em profissionalizar a gestão de consultores. Diferente de catálogos digitais simples, ele resolve dores operacionais profundas: quebra de estoque, inadimplência (fiado) e desorganização financeira.
+**Posicionamento:** O VendaAI não é apenas uma loja virtual; é um **Gerente de Negócios** para a consultora de beleza.
+**Diferencial Competitivo:** Enquanto o **Stoqui** foca em ser uma "vitrine simples" para iniciantes (e falha em escalar), o **VendaAI** foca na **Inteligência de Venda** (CRM de Recorrência) e **Gestão Profissional** (Liderança e Estoque Real) para consultoras que querem crescer.
 
-**Cliente Principal (MVP):** Rede Farmasi (Thiago Brasileiro).
-**Modelo de Negócio:** Freemium (Liderança) / SaaS (Assinatura Mensal).
-
----
-
-## 2. Personas e Regras de Acesso
-
-### A. O Consultor (Vendedor)
-
-Usuário base. Possui:
-
-- Loja virtual personalizada.
-- Gestão de estoque próprio.
-- CRM de clientes.
-- Conta digital (integrada Asaas) para cobranças.
-
-### B. O Líder (Gestor)
-
-Qualquer consultor que cadastra outro consultor abaixo dele.
-
-- **Regra de Visibilidade**: Vê o volume de vendas e status da equipe, mas **NÃO VÊ** os dados sensíveis (nome/telefone) dos clientes finais dos seus consultores.
-- **Função**: Monitoria, suporte e disponibilização de estoque compartilhado.
-
-### C. O Consumidor Final
-
-Cliente do consultor.
-
-- Acesso à loja.
-- Histórico de pedidos.
-- Participação em grupos de Consórcio.
-- **Esteira de Cadastro**: Obrigatório preencher CPF, Endereço e Aceite Legal para compras a prazo.
-
-> [!CAUTION]
-> **Regra de Ouro da Hierarquia**: O vínculo de um consultor a um líder é único e irreversível após o primeiro login/cadastro. Não é possível "trocar de líder" sem recriar a conta.
+**Meta da v1:** Provar valor imediato ($ no bolso) através da recuperação de vendas perdidas (CRM) e organização de estoque (Fim da quebra).
 
 ---
 
-## 3. Especificação Funcional por Módulo
+## 2. Escopo Funcional: v1 (Launch)
 
-### 📦 Módulo 1: Estoque Inteligente e Colaborativo
+### 🚀 A. Onboarding "Zero Config" (Fator Stoqui)
 
-O coração do sistema. Resolve o problema: "Eu vendi, mas não tenho o produto agora".
+*Meta: O usuário deve ter sua loja "Link na Bio" pronta em menos de 2 minutos.*
 
-1. **Multi-localização**
-    - O consultor pode criar locais personalizados: "Em casa", "Porta-malas", "Escritório", "Emprestado para Maria".
-    - Movimentação entre locais via "drag-and-drop" ou leitura rápida.
+1. **Cadastro Expresso:** Nome, Telefone (WhatsApp) e Definição de URL da Loja.
+2. **Carga Inicial Inteligente:**
+    - O sistema já nasce populado com o **Catálogo Farmasi Vigente** (fotos oficiais e descrições).
+    - Usuário apenas "Tica" o que tem em estoque. Nada de cadastrar foto/preço manualmente produto por produto.
 
-2. **Entrada Inteligente de Estoque**
-    - **Leitura de XML (NFe)**: O usuário sobe o XML da nota da Farmasi. O sistema lê os produtos, quantidades e **custo unitário**.
-    - **Cálculo de Custo (Preço Médio Ponderado)**:
-        - *Fórmula*: `((QtdAtual * CustoAtual) + (QtdNova * CustoNovo)) / (QtdTotal)`
-        - Isso nivela o lucro real do consultor independentemente de qual lote ele vendeu.
+### 📦 B. Estoque Inteligente (Fator Diferencial)
 
-3. **Rede de Colaboração (Empréstimos/Trocas)**
-    - **Vitrine Compartilhada**: Consultor pode ver se seu Líder ou Amigo tem o produto X disponível.
-    - **Recurso de Empréstimo**:
-        - Consultor A solicita 2 perfumes ao Consultor B.
-        - B aprova -> Estoque sai de B e entra em A com status "Origem: Empréstimo de B".
-    - **Recurso de Troca (Permuta)**:
-        - Troca física de produtos equivalentes.
-        - **Regra de Valor**: Para trocas, o sistema ignora o "Custo Pago" e usa o **"Preço de Referência" (Tabela Oficial)** para calcular o saldo devedor entre as partes.
+1. **Desmembramento de Kits (Killer Feature):**
+    - Consultora compra "Kit Início".
+    - Botão **"Desmembrar Kit"**: O sistema dá baixa no Kit e dá entrada automática em 1 Batom, 1 Base, 1 Perfume.
+    - *Impacto:* Resolve a bagunça de estoque de quem compra kits promocionais.
+2. **Multi-Localização Simplificada:**
+    - Locais padrão: "Minha Casa", "Bolsa/Pronta Entrega".
+    - Movimentação rápida (arrastar) entre locais.
+3. **Controle de Validade:**
+    - Campo de validade no cadastro de lote.
+    - Alerta visual: "3 produtos vencendo este mês. Faça promoção!".
 
-### 💰 Módulo 2: Financeiro e Jurídico (Anti-Calote)
+### 🤝 C. CRM de Ciclo de Vida (A "Máquina de Dinheiro")
 
-Profissionaliza a venda a prazo ("boleto/fiado").
+1. **O "Recall" de Produto:**
+    - Cada produto tem um atributo oculto: `dias_duracao_media` (ex: Base = 45 dias).
+    - **Painel de Oportunidades:** Lista diária de clientes para contatar.
+    - *Mensagem Pronta:* "Oi Maria! Sua base deve estar no finalzinho. Posso separar outra com 5% de desconta para garantir?"
+2. **Perfil de Beleza:**
+    - Tags rápidas no cliente: "Pele Oleosa", "Ama Perfume Doce", "Atrasa Pagamento".
 
-1. **Integração Asaas (Gateway)**
-    - Geração automática de Boletos e Pix.
-    - Split de pagamentos (futuro).
-    - Notificações de cobrança (SMS/Email) automáticas pelo gateway.
+### 🛒 D. Loja & Checkout (Experiência do Cliente)
 
-2. **Esteira de Crédito do Cliente**
-    - Antes da primeira compra a prazo, o cliente passa por um "Onboarding Jurídico".
-    - Validação de CPF (Receita/Algoritmo).
-    - Validação de Endereço (ViaCEP).
-    - **Termo de Aceite Digital**: Checkbox obrigatório "Concordo com Multa e Juros". O sistema grava IP e Timestamp como prova legal.
+1. **Catálogo Visual (Pinterest-like):**
+    - Busca ultra-rápida.
+    - Filtros por "Necessidade" (ex: "Para acne", "Para presente").
+2. **Checkout Híbrido:**
+    - **Modo Vitrine:** Cliente monta carrinho -> Envia pedido no WhatsApp da Consultora (típico Stoqui).
+    - **Modo Venda Direta:** Cliente paga via Link/Pix (Integração Futura Asaas na v1 ou manual).
 
-3. **Configuração de Juros**
-    - O Consultor define suas regras: "Cobrar 2% de multa + 1% ao mês".
-    - O sistema aplica isso automaticamente na geração do boleto Asaas.
+### 🏆 E. Liderança e Gamificação (Fator Retenção)
 
-### 🤝 Módulo 3: CRM Proativo
-
-O sistema trabalha pelo consultor.
-
-1. **Ciclo de Vida do Produto**
-    - Cada produto tem uma "Duração Estimada" (Ex: Perfume 100ml = 60 dias).
-    - O sistema avisa: "O perfume da Cliente Ana deve estar acabando. Ofereça reposição agora."
-
-2. **Datas Especiais**
-    - Aniversários (Consultora e Clientes).
-    - O sistema sugere presentes baseados no histórico de compras do cliente.
-
-### 🏆 Módulo 4: O Consórcio (Diferencial)
-
-Sistema de compras recorrentes programadas.
-
-1. **Grupos e Cotas**
-    - Consultor cria um grupo de 10 pessoas / 10 meses.
-    - Todos pagam mensalmente.
-
-2. **Motor de Aprovação (Score Interno)**
-    - Cliente "Novo/Sem Histórico": Aprovação sujeita a fiador ou cartão.
-    - Cliente "Bom Pagador" (Score > X no app): Pode entrar no consórcio com aprovação automática.
+1. **Visão da Líder (Downlines):**
+    - Líder vê volume de estoque parado na mão da sua equipe.
+    - Líder vê ranking de vendas da equipe.
+2. **Troca de Estoque (Marketplace Interno):**
+    - Líder pode ver: "Consultora A tem excesso de X, Consultora B precisa de X". Sugerir troca.
 
 ---
 
-## 4. Diretrizes Técnicas
+## 3. Personas e Regras de Negócio
 
-### Arquitetura (Tech Stack)
+### A. O Consultor
 
-- **Frontend**: Next.js 15 (App Router), TailwindCSS, Shadcn/UI (Componentes).
-- **Backend**: Server Actions (Next.js), Prisma ORM.
-- **Banco de Dados**: PostgreSQL.
-- **Infraestrutura**: Docker (local), Deploy Vercel/Railway (Produção).
+- Foco: Vender rápido, não esquecer de cobrar, girar estoque.
+- Dores: Compra kit e não sabe precificar unitário; esquece de oferecer reposição.
 
-### Padrões de Interface (UX)
+### B. O Líder
 
-- **Modo Duplo**: Configuração global que altera a densidade da informação.
-  - *Simples*: Botões grandes, pouca info, foco na tarefa.
-  - *Avançado*: Dashboards, tabelas densas, gráficos.
-- **PWA (Progressive Web App)**: Foco total em mobile-first e instalação na home screen, evitando taxas da Apple Store inicialmente.
+- Foco: Reter a equipe e aumentar o volume de compras.
+- Dores: Não sabe se a consultora "desistiu" ou se está só com estoque cheio.
+- *Poder:* Único que visualiza dados agregados da sua rede.
 
-### Auditoria e Segurança
+---
 
-- Logs imutáveis para todas as transações de estoque (quem, quando, o quê, de onde, para onde).
-- Logs de aceite jurídico para proteção LGPD.
+## 4. Diretrizes Técnicas e UX
+
+### Stack Tecnológico
+
+- **Frontend:** Next.js 15 (App Router), TailwindCSS, Shadcn/UI.
+- **Backend:** Server Actions + Prisma ORM + PostgreSQL.
+- **Mobile First:** A interface desktop é secundária. Tudo deve ser operável com o polegar.
+
+### UX: "Simples vs Profissional"
+
+Para não assustar a consultora iniciante:
+
+1. **Modo Simples (Default):**
+    - Botões grandes: "Vender", "Estoque", "Clientes".
+    - Dashboards escondidos.
+2. **Modo Profissional (Toggle):**
+    - Libera relatórios de DRE, Curva ABC, Gestão de Lotes complexa.
+
+---
+
+## 5. Roadmap de Evolução (Pós-v1)
+
+### v2 - O Banco da Consultora
+
+- Conta Digital Integrada.
+- Split de Pagamento (Consultora recebe sua parte, Líder recebe comissão, Farmasi recebe custo).
+- Emissão de NF-e simplificada.
+
+### v3 - O Ecossistema
+
+- Consórcio Digital (Clube de Compras).
+- Integração IA com WhatsApp (bot que agenda reposição sozinho).
