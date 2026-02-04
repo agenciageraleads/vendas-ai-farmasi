@@ -138,4 +138,23 @@ export default async function DashboardPage() {
                 </div>
             </div>
         );
+    } catch (error) {
+        console.error('Dashboard error:', error);
+        return (
+            <div className="min-h-screen flex items-center justify-center p-8">
+                <Card>
+                    <div className="text-center space-y-4">
+                        <h1 className="text-2xl font-bold text-red-600">⚠️ Erro no Dashboard</h1>
+                        <p className="text-gray-600">
+                            Ocorreu um erro ao carregar o dashboard.
+                            Verifique se o banco de dados está configurado corretamente.
+                        </p>
+                        <p className="text-sm text-gray-400 font-mono">
+                            {error instanceof Error ? error.message : 'Erro desconhecido'}
+                        </p>
+                    </div>
+                </Card>
+            </div>
+        );
     }
+}
