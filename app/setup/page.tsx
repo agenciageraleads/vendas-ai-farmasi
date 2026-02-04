@@ -20,17 +20,30 @@ export default async function SetupPage() {
     });
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
-            <div className="max-w-4xl w-full bg-white rounded-3xl shadow-xl overflow-hidden">
-                <div className="bg-pink-600 p-8 text-white text-center">
-                    <h1 className="text-3xl font-black mb-2">Bem-vinda ao VendaAI! 🚀</h1>
-                    <p className="text-pink-100">Vamos configurar sua loja em 2 minutos. O que você já tem em mãos?</p>
-                </div>
-
-                <div className="p-8">
-                    <StockSelection userId={user.id} products={products} />
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+            {/* Header Clean */}
+            <div className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center text-white font-black text-sm">
+                            V
+                        </div>
+                        <span className="font-bold text-gray-900 tracking-tight">VendaAI Setup</span>
+                    </div>
+                    <div className="text-sm text-gray-500 font-medium">
+                        Passo 1 de 1
+                    </div>
                 </div>
             </div>
+
+            <main className="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+                <div className="text-center max-w-2xl mx-auto mb-8 fade-in">
+                    <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3 tracking-tight">Vamos montar seu estoque? 📦</h1>
+                    <p className="text-lg text-gray-500">Selecione os produtos que você já tem em mãos para começarmos a vender.</p>
+                </div>
+
+                <StockSelection userId={user.id} products={products} />
+            </main>
         </div>
     );
 }
