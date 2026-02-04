@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { getConsultantInventory, getInventorySummary } from '@/app/actions/inventory';
 import InventoryTable from '@/components/inventory/InventoryTable';
+import BarcodeScannerButton from '@/components/inventory/BarcodeScannerButton';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +13,10 @@ export default async function InventoryDashboardPage() {
     }) || await prisma.user.findFirst();
 
     if (!user) return <div className="p-10 text-center">Usuário não encontrado. Rode o seed.</div>;
+
+    if (!user.onboardingCompleted) {
+        redirect('/setup');
+    }
 
     // Fetch grouped data
     const inventoryData = await getConsultantInventory(user.id);
@@ -59,6 +65,9 @@ export default async function InventoryDashboardPage() {
                 {/* Main Table */}
                 <InventoryTable inventory={inventory || []} />
             </div>
+
+            {/* Botão Flutuante de Scanner */}
+            <BarcodeScannerButton />
         </div>
     );
 }

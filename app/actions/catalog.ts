@@ -67,3 +67,25 @@ export async function searchProducts(query: string) {
         }
     });
 }
+
+/**
+ * Busca produto específico por SKU (código de barras)
+ * @param sku - Código SKU do produto
+ * @returns Produto encontrado ou null
+ */
+export async function searchProductBySKU(sku: string) {
+    if (!sku) return null;
+
+    return await prisma.product.findUnique({
+        where: { sku },
+        select: {
+            id: true,
+            name: true,
+            sku: true,
+            imageUrl: true,
+            basePrice: true,
+            costPrice: true,
+            description: true
+        }
+    });
+}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { searchProducts } from '@/app/actions/catalog';
 import { createSale } from '@/app/actions/sales';
+import CustomerAutocomplete from '@/components/CustomerAutocomplete';
 
 export default function POSForm({ userId }: { userId: string }) {
     // Cart State
@@ -110,13 +111,31 @@ export default function POSForm({ userId }: { userId: string }) {
                                     <div
                                         key={prod.id}
                                         onClick={() => addToCart(prod)}
-                                        className="p-3 hover:bg-blue-50 cursor-pointer flex justify-between items-center border-b border-gray-50"
+                                        className="p-4 hover:bg-primary-50 cursor-pointer flex items-center gap-4 border-b border-gray-50 last:border-b-0 transition"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            {prod.imageUrl && <img src={prod.imageUrl} className="w-8 h-8 rounded bg-gray-100" />}
-                                            <span className="font-bold text-gray-800 text-sm">{prod.name}</span>
+                                        {/* Foto do Produto */}
+                                        <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                                            {prod.imageUrl ? (
+                                                <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                            )}
                                         </div>
-                                        <span className="text-xs bg-gray-100 px-2 py-1 rounded font-bold">R$ {Number(prod.basePrice).toFixed(2)}</span>
+
+                                        {/* Info do Produto */}
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-bold text-gray-800 text-sm truncate">{prod.name}</p>
+                                            <p className="text-xs text-gray-500 mt-0.5">SKU: {prod.sku}</p>
+                                        </div>
+
+                                        {/* Preço */}
+                                        <div className="text-right">
+                                            <p className="text-sm font-bold text-primary-600">R$ {Number(prod.basePrice).toFixed(2)}</p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -173,63 +192,84 @@ export default function POSForm({ userId }: { userId: string }) {
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-xs uppercase font-bold text-gray-400 mb-1">Nome Completo</label>
-                            <input
-                                type="text"
-                                value={customer.name}
-                                onChange={e => setCustomer({ ...customer, name: e.target.value })}
-                                className="w-full p-3 bg-gray-50 rounded-lg border-none text-sm font-bold"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs uppercase font-bold text-gray-400 mb-1">CPF (Obrigatório)</label>
-                            <input
-                                type="text"
-                                value={customer.cpf}
-                                onChange={e => setCustomer({ ...customer, cpf: e.target.value })}
-                                placeholder="000.000.000-00"
-                                className="w-full p-3 bg-gray-50 rounded-lg border-none text-sm font-bold"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs uppercase font-bold text-gray-400 mb-1">WhatsApp</label>
-                            <input
-                                type="text"
-                                value={customer.phone}
-                                onChange={e => setCustomer({ ...customer, phone: e.target.value })}
-                                className="w-full p-3 bg-gray-50 rounded-lg border-none text-sm font-bold"
-                            />
-                        </div>
-
-                        <div className="pt-4 border-t border-gray-100">
-                            <label className="flex items-start gap-3 cursor-pointer group">
-                                <input
-                                    type="checkbox"
-                                    checked={customer.termsAccepted}
-                                    onChange={e => setCustomer({ ...customer, termsAccepted: e.target.checked })}
-                                    className="mt-1 w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300"
-                                />
-                                <span className="text-xs text-gray-500 group-hover:text-gray-700 transition">
-                                    Declaro que o cliente leu e aceitou os <span className="underline text-blue-600">Termos de Uso e Política de Juros</span> para compras a prazo.
-                                </span>
+                            <label className="block text-xs uppercase font-bold text-gray-400 mb-2">
+                                Buscar Cliente (Nome, CPF ou Telefone)
                             </label>
+                            <CustomerAutocomplete
+                                onSelect={(selectedCustomer) => {
+                                    setCustomer({
+                                        name: selectedCustomer.name || '',
+                                        cpf: selectedCustomer.cpf || '',
+                                        phone: selectedCustomer.phone || '',
+                                        email: selectedCustomer.email || '',
+                                        termsAccepted: customer.termsAccepted
+                                    });
+                                }}
+                                placeholder="Digite para buscar cliente existente..."
+                            />
                         </div>
 
-                        <button
-                            onClick={handleCheckout}
-                            disabled={loading || cart.length === 0 || !customer.termsAccepted || !customer.cpf}
-                            className={`w-full py-4 mt-4 rounded-xl font-black text-sm uppercase tracking-widest transition shadow-lg
+                        <div className="border-t pt-4">
+                            <p className="text-xs text-gray-500 mb-3 font-medium">Ou preencha manualmente:</p>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="block text-xs uppercase font-bold text-gray-400 mb-1">Nome Completo</label>
+                                    <input
+                                        type="text"
+                                        value={customer.name}
+                                        onChange={e => setCustomer({ ...customer, name: e.target.value })}
+                                        className="w-full p-3 bg-gray-50 rounded-lg border-none text-sm font-medium focus:ring-2 focus:ring-primary-500 outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs uppercase font-bold text-gray-400 mb-1">CPF (Obrigatório)</label>
+                                    <input
+                                        type="text"
+                                        value={customer.cpf}
+                                        onChange={e => setCustomer({ ...customer, cpf: e.target.value })}
+                                        placeholder="000.000.000-00"
+                                        className="w-full p-3 bg-gray-50 rounded-lg border-none text-sm font-bold"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs uppercase font-bold text-gray-400 mb-1">WhatsApp</label>
+                                    <input
+                                        type="text"
+                                        value={customer.phone}
+                                        onChange={e => setCustomer({ ...customer, phone: e.target.value })}
+                                        className="w-full p-3 bg-gray-50 rounded-lg border-none text-sm font-bold"
+                                    />
+                                </div>
+
+                                <div className="pt-4 border-t border-gray-100">
+                                    <label className="flex items-start gap-3 cursor-pointer group">
+                                        <input
+                                            type="checkbox"
+                                            checked={customer.termsAccepted}
+                                            onChange={e => setCustomer({ ...customer, termsAccepted: e.target.checked })}
+                                            className="mt-1 w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300"
+                                        />
+                                        <span className="text-xs text-gray-500 group-hover:text-gray-700 transition">
+                                            Declaro que o cliente leu e aceitou os <span className="underline text-blue-600">Termos de Uso e Política de Juros</span> para compras a prazo.
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <button
+                                    onClick={handleCheckout}
+                                    disabled={loading || cart.length === 0 || !customer.termsAccepted || !customer.cpf}
+                                    className={`w-full py-4 mt-4 rounded-xl font-black text-sm uppercase tracking-widest transition shadow-lg
                                 ${loading || cart.length === 0 || !customer.termsAccepted || !customer.cpf
-                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
-                                    : 'bg-black text-white hover:bg-gray-900 shadow-gray-300 hover:shadow-gray-400 transform active:scale-95'
-                                }
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
+                                            : 'bg-black text-white hover:bg-gray-900 shadow-gray-300 hover:shadow-gray-400 transform active:scale-95'
+                                        }
                             `}
-                        >
-                            {loading ? 'Processando...' : `Finalizar Venda (R$ ${cartTotal.toFixed(2)})`}
-                        </button>
+                                >
+                                    {loading ? 'Processando...' : `Finalizar Venda (R$ ${cartTotal.toFixed(2)})`}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    );
+                );
 }
