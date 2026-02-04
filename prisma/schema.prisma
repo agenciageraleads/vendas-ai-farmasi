@@ -43,6 +43,7 @@ model User {
   role      Role     @default(CONSULTANT)
   
   // UX & Configs
+  onboardingCompleted Boolean  @default(false)
   preferences      Json?    // Ex: { "mode": "simple" | "advanced", "theme": "dark" }
   interestSettings Json?    // Ex: { "fine": 2.0, "monthlyInterest": 1.0 }
   
@@ -62,6 +63,9 @@ model User {
   referenceName   String?   // Pessoa de referência
   referencePhone  String?
   legalAcceptances LegalTermAcceptance[]
+  
+  // Carrinho de Compras
+  carts          Cart[]
 
   inventory      InventoryItem[]
   transactions   InventoryTransaction[] // Histórico de todas as mov do usuário
@@ -115,6 +119,7 @@ model Product {
   description    String?
   sku            String   @unique // Catalog code
   imageUrl       String?
+  usageDuration  Int      @default(30) // Dias médios de duração
   
   basePrice      Decimal  // Generated/Web Price (Venda Sugerido)
   costPrice      Decimal  // Current effective cost (approx)
@@ -124,6 +129,7 @@ model Product {
   orderItems     OrderItem[]
   transactions   InventoryTransaction[]
   requests       StockRequest[]
+  cartItems      CartItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -216,6 +222,39 @@ model OrderItem {
   
   quantity  Int
   unitPrice Decimal 
+  
+  createdAt DateTime @default(now())
+}
+
+// Carrinho Persistente - Permite salvar carrinho entre sessões
+model Cart {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  items     CartItem[]
+  
+  // Dados do cliente (pré-preenchido durante a venda)
+  customerName  String?
+  customerCpf   String?
+  customerPhone String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  quantity  Int
+  unitPrice Decimal
   
   createdAt DateTime @default(now())
 }
