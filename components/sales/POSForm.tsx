@@ -271,5 +271,7 @@ export default function POSForm({ userId }: { userId: string }) {
                         </div>
                     </div>
                 </div>
-                );
+            </div>
+        </div>
+    );
 }
