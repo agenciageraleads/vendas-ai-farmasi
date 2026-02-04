@@ -16,6 +16,24 @@ Desenvolver uma plataforma SaaS completa para consultores de venda direta, centr
   - [x] Multi-localização + Preço Médio.
   - [x] Entradas, Transferências e Auditoria.
 
+### Fase 1.1: Onboarding (Novo)
+
+- [x] **Fluxo Zero Config**
+  - [x] Flag `onboardingCompleted` no Schema.
+  - [x] Tela de Setup com seleção de produtos.
+  - [x] Server Action de Carga Inicial.
+  - [x] Middleware/Redirect de proteção.
+
+### Fase 4: CRM de Ciclo de Vida (Novo)
+
+- [x] **Dashboard "Cockpit"**
+  - [x] Página `/dashboard` agregadora.
+  - [x] Widgets de Estoque e Vendas.
+- [x] **Motor de Recall**
+  - [x] `usageDuration` no Produto.
+  - [x] Algoritmo de previsão de recompra.
+  - [x] Integração com WhatsApp.
+
 ### Fase 2: Rede de Colaboração (Diferencial)
 
 - [x] **Módulo de Liderança Fluida**
