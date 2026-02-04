@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
+import Button from '@/components/ui/Button';
 
 interface LocationData {
     id: string;
@@ -29,24 +32,22 @@ export default function InventoryTable({ inventory }: { inventory: ProductInvent
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/30">
-                <h2 className="text-lg font-bold text-gray-800">
+        <Card>
+            <div className="pb-4 mb-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 className="text-lg font-bold">
                     📦 Estoque Consolidado
                 </h2>
 
                 <div className="flex gap-2">
-                    <Link
-                        href="/dashboard/inventory/transfer"
-                        className="bg-white border border-gray-200 text-gray-700 text-xs font-bold px-4 py-2 rounded-lg hover:bg-gray-50 transition"
-                    >
-                        🔄 Transferir
+                    <Link href="/dashboard/inventory/transfer">
+                        <Button variant="outline" size="sm">
+                            🔄 Transferir
+                        </Button>
                     </Link>
-                    <Link
-                        href="/dashboard/inventory/entry"
-                        className="bg-black text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-gray-800 transition shadow-lg shadow-gray-200"
-                    >
-                        + Nova Entrada
+                    <Link href="/dashboard/inventory/entry">
+                        <Button variant="primary" size="sm">
+                            + Nova Entrada
+                        </Button>
                     </Link>
                 </div>
             </div>
@@ -88,9 +89,12 @@ export default function InventoryTable({ inventory }: { inventory: ProductInvent
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${item.totalQuantity < 3 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-700'}`}>
+                                            <Badge
+                                                variant={item.totalQuantity < 3 ? 'error' : 'success'}
+                                                size="md"
+                                            >
                                                 {item.totalQuantity} un
-                                            </span>
+                                            </Badge>
                                         </td>
                                         <td className="px-6 py-4 text-right font-mono text-sm text-gray-600">
                                             R$ {avgCost.toFixed(2)}
@@ -134,6 +138,6 @@ export default function InventoryTable({ inventory }: { inventory: ProductInvent
                     </tbody>
                 </table>
             </div>
-        </div>
+        </Card>
     );
 }

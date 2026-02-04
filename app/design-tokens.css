@@ -1,0 +1,221 @@
+/* VendaAI Design Tokens - Mobile First */
+/* Baseado em VendeAe, Stoqui e Farmasi */
+
+:root {
+  /* ========================================
+     CORES PRIMÁRIAS
+     ======================================== */
+  
+  /* Roxo Farmasi - Cor Principal */
+  --primary-500: #6A4DFD;
+  --primary-600: #5A3DE8;
+  --primary-700: #4A2DD3;
+  --primary-400: #8B6FFE;
+  --primary-300: #A890FF;
+
+  /* Rosa Farmasi - Ação e Destaque */
+  --accent-500: #FF5A5F;
+  --accent-600: #E54A4F;
+  --accent-700: #CC3A3F;
+  --accent-400: #FF7B7F;
+  --accent-300: #FF9C9F;
+
+  /* Dourado - Sucesso e Conquistas */
+  --gold-500: #F0D05E;
+  --gold-600: #E0C04E;
+  --gold-700: #D0B03E;
+
+  /* ========================================
+     CORES NEUTRAS
+     ======================================== */
+  
+  /* Backgrounds */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F7F7F7;
+  --bg-tertiary: #EFEFEF;
+
+  /* Dark Mode (opcional) */
+  --bg-dark-primary: #1A1A2E;
+  --bg-dark-secondary: #16213E;
+  --bg-dark-tertiary: #0F3460;
+
+  /* Textos */
+  --text-primary: #222222;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --text-inverse: #FFFFFF;
+
+  /* ========================================
+     CORES SEMÂNTICAS
+     ======================================== */
+  
+  /* Feedback */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* Backgrounds de Feedback */
+  --success-bg: #D1FAE5;
+  --warning-bg: #FEF3C7;
+  --error-bg: #FEE2E2;
+  --info-bg: #DBEAFE;
+
+  /* ========================================
+     TIPOGRAFIA
+     ======================================== */
+  
+  /* Escala Tipográfica Mobile */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+
+  /* Pesos de Fonte */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* ========================================
+     ESPAÇAMENTO (8px base)
+     ======================================== */
+  
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+
+  /* ========================================
+     CONTAINERS E BREAKPOINTS
+     ======================================== */
+  
+  /* Padding Padrão de Telas */
+  --screen-padding: var(--space-4);  /* 16px mobile */
+
+  /* ========================================
+     BORDAS E SOMBRAS
+     ======================================== */
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-3xl: 2rem;      /* 32px */
+  --radius-full: 9999px;   /* Pill/Circle */
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  /* Sombras Coloridas */
+  --shadow-primary: 0 10px 25px -5px rgba(106, 77, 253, 0.3);
+  --shadow-accent: 0 10px 25px -5px rgba(255, 90, 95, 0.3);
+
+  /* ========================================
+     ANIMAÇÕES
+     ======================================== */
+  
+  /* Durações */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+
+  /* Easing Functions */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ========================================
+   BREAKPOINTS (Tablet+)
+   ======================================== */
+
+@media (min-width: 768px) {
+  :root {
+    /* Tipografia Desktop */
+    --text-xl: 1.5rem;    /* 24px */
+    --text-2xl: 2rem;     /* 32px */
+    --text-3xl: 2.5rem;   /* 40px */
+    --text-4xl: 3rem;     /* 48px */
+
+    /* Padding de Telas */
+    --screen-padding: var(--space-6);  /* 24px tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    /* Padding de Telas Desktop */
+    --screen-padding: var(--space-8);  /* 32px desktop */
+  }
+}
+
+/* ========================================
+   ANIMAÇÕES KEYFRAMES
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
